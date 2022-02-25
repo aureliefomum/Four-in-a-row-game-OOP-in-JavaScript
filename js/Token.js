@@ -40,6 +40,7 @@ class Token {
 
 	/**
 	 * Moves html token one column to right.
+	 * @param   {number}    columns - number of columns on the game board
 	 */
 
 	moveRight(columns) {
@@ -51,10 +52,10 @@ class Token {
 
 	/**
 	 * Gets left offset of html element.
-	 * @return  {string}   Left offset of token object's htmlToken.
+	 * @return  {number}   Left offset of token object's htmlToken.
 	 */
 
 	get offsetLeft() {
-		return this.HTMLToken.offsetLeft;
+		return this.htmlToken.offsetLeft;
 	}
 }
