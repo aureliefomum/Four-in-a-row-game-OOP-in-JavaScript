@@ -38,8 +38,29 @@ class Game {
 			} else if (e.key === "ArrowRight") {
 				this.activePlayer.activeToken.moveRight(this.board.columns);
 			} else if (e.key === "ArrowDown") {
-				//    move token down
+				this.playToken();
 			}
+		}
+	}
+
+	/**
+	 * finds target space to drop token and drops token
+	 */
+
+	playToken() {
+		let spaces = this.board.spaces;
+		let activeToken = this.activePlayer.activeToken;
+		let targetColumn = spaces[activeToken.columnLocation];
+		let targetSpace = null;
+		for (let i = 0; i < targetColumn.length; i++) {
+			if (targetColumn[i].token === null) {
+				targetSpace = targetColumn[i];
+			}
+		}
+
+		if (targetSpace !== null) {
+			newGame.ready = false;
+			activeToken.drop(targetSpace);
 		}
 	}
 
