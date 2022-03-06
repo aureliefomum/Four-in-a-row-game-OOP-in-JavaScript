@@ -138,9 +138,9 @@ class Game {
 	 */
 
 	switchPlayers() {
-		this.createPlayers.forEach((player) =>
-			player.active ? !player.active : player.active
-		);
+		for (let player of this.players) {
+			player.active === true ? false : true;
+		}
 	}
 
 	/**
@@ -151,5 +151,15 @@ class Game {
 		this.board.drawHTMLBoard();
 		this.activePlayer.activeToken.drawHTMLToken();
 		this.ready = true;
+	}
+
+	/**
+	 * Displays game over message
+	 * * @param {string} message - Game over message.
+	 */
+
+	gameOver(message) {
+		document.getElementById("game-over").style.display = "block";
+		document.getElementById("game-over").textContent = message;
 	}
 }
