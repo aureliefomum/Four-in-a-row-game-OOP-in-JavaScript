@@ -134,6 +134,16 @@ class Game {
 	}
 
 	/**
+	 * Switches active player.
+	 */
+
+	switchPlayers() {
+		this.createPlayers.forEach((player) =>
+			player.active ? !player.active : player.active
+		);
+	}
+
+	/**
 	 * Starts game
 	 */
 
