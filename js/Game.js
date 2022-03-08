@@ -52,6 +52,7 @@ class Game {
 		let activeToken = this.activePlayer.activeToken;
 		let targetColumn = spaces[activeToken.columnLocation];
 		let targetSpace = null;
+
 		for (let i = 0; i < targetColumn.length; i++) {
 			if (targetColumn[i].token === null) {
 				targetSpace = targetColumn[i];
@@ -59,8 +60,11 @@ class Game {
 		}
 
 		if (targetSpace !== null) {
+			const newGame = this;
 			newGame.ready = false;
-			activeToken.drop(targetSpace);
+			activeToken.drop(targetSpace, function () {
+				newGame.updateGameState(activeToken, targetSpace);
+			});
 		}
 	}
 
@@ -151,6 +155,39 @@ class Game {
 		this.board.drawHTMLBoard();
 		this.activePlayer.activeToken.drawHTMLToken();
 		this.ready = true;
+	}
+
+	/**
+	 *
+	 * @param   {Object}  token  -  The token that's being dropped.
+	 * @param   {Object}  target -  Targeted space for dropped token.
+	 */
+	updateGameState(token, target) {
+		target.mark(token);
+		//check if last move is a winning move,
+		//if not, switch players,then check if newly active player has tokens left,
+		//if yes, pass a message to the gameOver method
+		if (!this.checkForWin(target)) {
+			this.switchPlayers();
+			if (this.activePlayer.checkTokens()) {
+				this.activePlayer.activeToken.drawHTMLToken();
+				this.ready = true;
+			} else {
+				this.gameOver("No more tokens");
+			}
+		} else {
+			this.gameOver(`${target.owner.name} wins!`);
+		}
+
+		//check if active player still has tokens available
+		//if yes, draw new token and set game to ready
+		//if not, game is over
+		if (this.activePlayer.checkTokens() === true) {
+			this.activePlayer.activeToken();
+			this.ready = true;
+		} else {
+			this.gameOver();
+		}
 	}
 
 	/**
